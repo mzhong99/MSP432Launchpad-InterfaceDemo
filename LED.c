@@ -14,8 +14,8 @@ LED* LEDs_construct()
     // Status of each pin is initialized because calloc will set as zero
     LED* leds = calloc(NUM_LEDS, sizeof(LED));
 
-    leds[LP_1].port = GPIO_PORT_P1;
-    leds[LP_1].pin  = GPIO_PIN0;
+    leds[LP_L1].port = GPIO_PORT_P1;
+    leds[LP_L1].pin  = GPIO_PIN0;
 
     leds[LP_RED].port = GPIO_PORT_P2;
     leds[LP_RED].pin  = GPIO_PIN0;
@@ -45,48 +45,45 @@ LED* LEDs_construct()
 
 void LEDs_turnOn(LEDTarget target)
 {
-    Controller* controller = Controller_getInstance();
-    uint_fast8_t port = controller->leds[target].port;
-    uint_fast16_t pin = controller->leds[target].pin;
+    LED* leds = Controller_getInstance()->leds;
+    uint_fast8_t port = leds[target].port;
+    uint_fast16_t pin = leds[target].pin;
 
     GPIO_setOutputHighOnPin(port, pin);
-    controller->leds[target].status = LED_ON;
+    leds[target].status = LED_ON;
 }
 
 void LEDs_turnOff(LEDTarget target)
 {
-    Controller* controller = Controller_getInstance();
-    uint_fast8_t port = controller->leds[target].port;
-    uint_fast16_t pin = controller->leds[target].pin;
+    LED* leds = Controller_getInstance()->leds;
+    uint_fast8_t port = leds[target].port;
+    uint_fast16_t pin = leds[target].pin;
 
     GPIO_setOutputLowOnPin(port, pin);
-    controller->leds[target].status = LED_OFF;
+    leds[target].status = LED_OFF;
 }
 
 void LEDs_toggle(LEDTarget target)
 {
-    Controller* controller = Controller_getInstance();
-    uint_fast8_t port = controller->leds[target].port;
-    uint_fast16_t pin = controller->leds[target].pin;
+    LED* leds = Controller_getInstance()->leds;
+    uint_fast8_t port = leds[target].port;
+    uint_fast16_t pin = leds[target].pin;
 
     GPIO_toggleOutputOnPin(port, pin);
-    controller->leds[target].status = !controller->leds[target].status;
+    leds[target].status = !leds[target].status;
 }
 
 int LEDs_getStatus(LEDTarget target)
 {
-    Controller* controller = Controller_getInstance();
-    return controller->leds[target].status;
+    LED* leds = Controller_getInstance()->leds;
+    return leds[target].status;
 }
 
 void LEDs_turnOffAll(void)
 {
-    Controller* controller = Controller_getInstance();
+    LED* leds = Controller_getInstance()->leds;
 
     for (int i = 0; i < NUM_LEDS; i++) {
-        uint_fast8_t port = controller->leds[i].port;
-        uint_fast16_t pin = controller->leds[i].pin;
-
-        GPIO_setOutputLowOnPin(port, pin);
+        GPIO_setOutputLowOnPin(leds[i].port, leds[i].pin);
     }
 }

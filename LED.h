@@ -15,7 +15,7 @@
 
 #define NUM_LEDS 7
 
-enum _LEDTarget { LP_1, LP_RED, LP_GRN, LP_BLU, BP_RED, BP_GRN, BP_BLU };
+enum _LEDTarget { LP_L1=0, LP_RED, LP_GRN, LP_BLU, BP_RED, BP_GRN, BP_BLU };
 typedef enum _LEDTarget LEDTarget;
 
 struct _LED
