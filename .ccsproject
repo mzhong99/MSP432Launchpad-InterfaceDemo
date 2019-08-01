@@ -15,4 +15,5 @@
 	<templateProperties value="id=empty_MSP_EXP432P401R_nortos_gcc.projectspec.empty_MSP_EXP432P401R_nortos_gcc,buildProfile=release,isHybrid=true"/>
 	<origin value="C:\ti\simplelink_msp432p4_sdk_3_20_00_06\examples\nortos\MSP_EXP432P401R\driverlib\empty\gcc\empty_MSP_EXP432P401R_nortos_gcc.projectspec"/>
 	<filesToOpen value=""/>
+	<isTargetManual value="false"/>
 </projectOptions>

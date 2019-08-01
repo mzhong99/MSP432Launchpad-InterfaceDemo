@@ -35,6 +35,7 @@ Button* Buttons_construct(void)
         buttons[i].history = 0xFFFFFFFF;
         buttons[i].debounceState = DB_Released;
         buttons[i].hasBufferedTap = false;
+        buttons[i].timer = SWTimer_construct(DEBOUNCE_MS);
     }
 
     // Switches on the LaunchPad require pull up resistors
@@ -47,13 +48,70 @@ Button* Buttons_construct(void)
     return buttons;
 }
 
-int Buttons_isDown(ButtonTarget target)
+int Buttons_isHeld(ButtonTarget target)
 {
-    return Buttons_getRawState(target) == PRESSED;
+    Button* buttons = Controller_getInstance()->buttons;
+    return buttons[target].debounceState == DB_Pressed
+        || buttons[target].debounceState == DB_Pressing;
+}
+
+int Buttons_isTapped(ButtonTarget target)
+{
+    Button* buttons = Controller_getInstance()->buttons;
+    int bufferedInput = buttons[target].hasBufferedTap;
+    buttons[target].hasBufferedTap = false;
+    return bufferedInput;
 }
 
 int Buttons_getRawState(ButtonTarget target)
 {
     Button* buttons = Controller_getInstance()->buttons;
     return GPIO_getInputPinValue(buttons[target].port, buttons[target].pin);
+}
+
+void Buttons_refresh()
+{
+    Button* buttons = Controller_getInstance()->buttons;
+
+    for (int i = 0; i < NUM_BUTTONS; i++) {
+		int rawState = Buttons_getRawState(i);
+        switch (buttons[i].debounceState)
+        {
+        	case DB_Released: {
+        		if (rawState == PRESSED) {
+        			SWTimer_start(buttons[i].timer);
+        			buttons[i].debounceState = DB_Pressing;
+        		}
+        		buttons[i].hasBufferedTap = false;
+        		break;
+        	}
+        	case DB_Pressed: {
+        		if (rawState == RELEASED) {
+        			SWTimer_start(buttons[i].timer);
+        			buttons[i].debounceState = DB_Releasing;
+        		}
+        		break;
+        	}
+        	case DB_Releasing: {
+        		if (rawState == PRESSED) {
+        			buttons[i].debounceState = DB_Pressed;
+        		}
+        		else if (SWTimer_expired(buttons[i].timer)) {
+        			buttons[i].debounceState = DB_Released;
+        			buttons[i].hasBufferedTap = false;
+        		}
+        		break;
+        	}
+        	case DB_Pressing: {
+        		if (rawState == RELEASED) {
+        			buttons[i].debounceState = DB_Released;
+        		}
+        		else if (SWTimer_expired(buttons[i].timer)) {
+        			buttons[i].debounceState = DB_Pressed;
+        			buttons[i].hasBufferedTap = true;
+        		}
+        		break;
+        	}
+        }
+    }
 }

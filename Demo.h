@@ -13,5 +13,6 @@
 void SuperLoop();
 void Demo_showLEDs();
 void Demo_showTimerLEDs();
+void Demo_showButtons();
 
 #endif /* DEMO_H_ */

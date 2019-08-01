@@ -7,8 +7,8 @@
 
 #include <Demo.h>
 
+#include <Controller.h>
 #include <Timer.h>
-#include <LED.h>
 
 void Demo_showLEDs()
 {
@@ -52,4 +52,24 @@ void Demo_showTimerLEDs()
             break;
         }
     }
+}
+
+void Demo_showButtons()
+{
+	int oldL1Status = LEDs_getStatus(LP_L1);
+	LEDs_turnOffAll();
+	if (oldL1Status == LED_ON) { LEDs_turnOn(LP_L1); }
+
+	for (int i = 0; i < NUM_BUTTONS; i++) {
+		if (Buttons_isTapped(i)) {
+			LEDs_toggle(LP_L1);
+		}
+	}
+
+	if (Buttons_isHeld(BP_BTN1)) { LEDs_turnOn(BP_RED); }
+	if (Buttons_isHeld(BP_BTN2)) { LEDs_turnOn(BP_GRN); }
+	if (Buttons_isHeld(BP_BTN3)) { LEDs_turnOn(BP_BLU); }
+
+	if (Buttons_isHeld(LP_BTN1)) { LEDs_turnOn(LP_RED); }
+	if (Buttons_isHeld(LP_BTN2)) { LEDs_turnOn(LP_BLU); }
 }

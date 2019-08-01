@@ -37,8 +37,10 @@ Demo.o: ../Demo.c C:/Users/Work/CodeComposerStudio/InterfaceDemo/Demo.h \
  C:/ti/simplelink_msp432p4_sdk_3_20_00_06/source/ti/devices/msp432p4xx/driverlib/wdt_a.h \
  C:/ti/simplelink_msp432p4_sdk_3_20_00_06/source/ti/devices/msp432p4xx/driverlib/sysctl.h \
  C:/ti/simplelink_msp432p4_sdk_3_20_00_06/source/ti/devices/msp432p4xx/driverlib/flash.h \
- C:/Users/Work/CodeComposerStudio/InterfaceDemo/Timer.h \
- C:/Users/Work/CodeComposerStudio/InterfaceDemo/LED.h
+ C:/Users/Work/CodeComposerStudio/InterfaceDemo/Controller.h \
+ C:/Users/Work/CodeComposerStudio/InterfaceDemo/LED.h \
+ C:/Users/Work/CodeComposerStudio/InterfaceDemo/Button.h \
+ C:/Users/Work/CodeComposerStudio/InterfaceDemo/Timer.h
 
 C:/Users/Work/CodeComposerStudio/InterfaceDemo/Demo.h:
 
@@ -118,6 +120,10 @@ C:/ti/simplelink_msp432p4_sdk_3_20_00_06/source/ti/devices/msp432p4xx/driverlib/
 
 C:/ti/simplelink_msp432p4_sdk_3_20_00_06/source/ti/devices/msp432p4xx/driverlib/flash.h:
 
-C:/Users/Work/CodeComposerStudio/InterfaceDemo/Timer.h:
+C:/Users/Work/CodeComposerStudio/InterfaceDemo/Controller.h:
 
 C:/Users/Work/CodeComposerStudio/InterfaceDemo/LED.h:
+
+C:/Users/Work/CodeComposerStudio/InterfaceDemo/Button.h:
+
+C:/Users/Work/CodeComposerStudio/InterfaceDemo/Timer.h:

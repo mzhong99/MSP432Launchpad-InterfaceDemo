@@ -8,6 +8,9 @@
 #include <Timer.h>
 #include <malloc.h>
 
+// Global Timer32 instance. Used for timing all software timers.
+// Do not change the settings unless you know what you're doing.
+// This timer is currently configured to maximize the time between rollovers
 static HWTimer Timer32_0;
 
 void Timer32_0_InterruptHandler()

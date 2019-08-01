@@ -25,8 +25,12 @@ void Initialize(void)
 
 void SuperLoop(void)
 {
-    for (;;) {
-        Demo_showTimerLEDs();
+    for (;;)
+    {
+    	Buttons_refresh();
+        // Demp_showLEDs();
+    	// Demo_showTimerLEDs();
+    	Demo_showButtons();
     }
 }
 
