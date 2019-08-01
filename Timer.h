@@ -35,8 +35,8 @@ typedef struct _HWTimer HWTimer;
 // In this API, all software timers are dependent on TIMER32_0_BASE
 struct _SWTimer
 {
-    uint64_t endHWTimerCycles;
-    uint64_t endHWTimerRollovers;
+    uint64_t endHWTicks;
+    uint64_t endHWRollovers;
     uint64_t duration_ms;
 };
 typedef struct _SWTimer SWTimer;

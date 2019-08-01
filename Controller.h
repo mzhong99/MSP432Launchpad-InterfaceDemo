@@ -9,10 +9,12 @@
 #define CONTROLLER_H_
 
 #include <LED.h>
+#include <Button.h>
 
 struct _Controller
 {
     LED* leds;
+    Button* buttons;
 };
 typedef struct _Controller Controller;
 

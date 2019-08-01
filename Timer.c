@@ -6,6 +6,7 @@
  */
 
 #include <Timer.h>
+#include <malloc.h>
 
 static HWTimer Timer32_0;
 
@@ -31,7 +32,7 @@ void HWTimers_init()
     Timer32_enableInterrupt(Timer32_0.timerID);
     Timer32_registerInterrupt(TIMER32_0_INTERRUPT, Timer32_0_InterruptHandler);
     Timer32_setCount(Timer32_0.timerID, Timer32_0.loadValue);
-    Timer32_startTimer(Timer32_0, Timer32_0.resetMode);
+    Timer32_startTimer(Timer32_0.timerID, Timer32_0.resetMode);
 }
 
 SWTimer* SWTimer_construct(uint32_t time_ms)
@@ -46,28 +47,31 @@ SWTimer* SWTimer_construct(uint32_t time_ms)
 
 void SWTimer_start(SWTimer* timer)
 {
-    uint64_t startHWTimerCycles = Timer32_getValue(Timer32_0.timerID);
-    uint64_t startHWTimerRollovers = Timer32_0.rollovers;
+    uint64_t startHWTicks
+        = (uint64_t) Timer32_0.loadValue
+        - (uint64_t) Timer32_getValue(Timer32_0.timerID);
+    uint64_t ticksInDuration
+        = ((uint64_t) timer->duration_ms * (uint64_t) SYSTEM_CLOCK)
+        / ((uint64_t) PRESCALER * (uint64_t) UNIT_SCALE_FACTOR);
 
-    uint64_t cyclesPerRollover = (uint64_t) SYSTEM_CLOCK * (uint64_t) PRESCALER;
+    uint64_t ticksPerRollover = (uint64_t) Timer32_0.loadValue;
 
-    uint64_t durationCycles
-        = timer->duration_ms * cyclesPerRollover / (uint64_t) UNIT_SCALE_FACTOR;
+    uint64_t runoffTicks = ticksInDuration % ticksPerRollover;
 
-    uint64_t requiredRollovers = durationCycles / cyclesPerRollover;
-    uint64_t runoffCycles = durationCycles % cyclesPerRollover;
+    uint64_t baseRollovers = ticksInDuration / ticksPerRollover;
+    uint64_t extraRollover = (runoffTicks + startHWTicks) / ticksPerRollover;
+    uint64_t endHWTicks = (startHWTicks + runoffTicks) % ticksPerRollover;
 
-    uint64_t additionalRollover
-        = (startHWTimerCycles + runoffCycles) / cyclesPerRollover;
-
-    timer->endHWTimerCycles
-        = (startHWTimerCycles + runoffCycles) % CyclesPerRollover
-    timer->endHWTimerRollovers
-        = startHWTimerRollovers + requiredRollovers + additionalRollover;
+    timer->endHWRollovers = Timer32_0.rollovers + baseRollovers + extraRollover;
+    timer->endHWTicks = endHWTicks;
 }
 
 bool SWTimer_expired(SWTimer* timer)
 {
-    return timer->endHWTimerCycles >= Timer32_getValue(Timer32_0.timerID)
-        && timer->endHWTimerRollovers >= Timer32_0.rollovers;
+    uint64_t currentHWTicks
+        = (uint64_t) Timer32_0.loadValue
+        - (uint64_t) Timer32_getValue(Timer32_0.timerID);
+
+    return currentHWTicks >= timer->endHWTicks
+        && Timer32_0.rollovers >= timer->endHWRollovers;
 }

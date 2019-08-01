@@ -1,4 +1,4 @@
-Controller.o: ../Controller.c \
+Button.o: ../Button.c \
  C:/Users/Work/CodeComposerStudio/InterfaceDemo/Controller.h \
  C:/Users/Work/CodeComposerStudio/InterfaceDemo/LED.h \
  C:/ti/simplelink_msp432p4_sdk_3_20_00_06/source/ti/devices/msp432p4xx/driverlib/driverlib.h \

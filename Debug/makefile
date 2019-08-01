@@ -10,10 +10,12 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
+"./Button.o" \
 "./Controller.o" \
 "./Demo.o" \
 "./LED.o" \
 "./Main.o" \
+"./Timer.o" \
 "./system_msp432p401r.o" \
 "./gcc/startup_msp432p401r_gcc.o" \
 -Wl,-T"../msp432p401r.lds" \
@@ -170,8 +172,8 @@ InterfaceDemo.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "Controller.o" "Demo.o" "LED.o" "Main.o" "system_msp432p401r.o" "gcc\startup_msp432p401r_gcc.o" 
-	-$(RM) "Controller.d" "Demo.d" "LED.d" "Main.d" "system_msp432p401r.d" "gcc\startup_msp432p401r_gcc.d" 
+	-$(RM) "Button.o" "Controller.o" "Demo.o" "LED.o" "Main.o" "Timer.o" "system_msp432p401r.o" "gcc\startup_msp432p401r_gcc.o" 
+	-$(RM) "Button.d" "Controller.d" "Demo.d" "LED.d" "Main.d" "Timer.d" "system_msp432p401r.d" "gcc\startup_msp432p401r_gcc.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

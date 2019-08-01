@@ -8,7 +8,7 @@
 #include <Controller.h>
 #include <stdlib.h>
 
-Controller* Controller_getInstance(void)
+Controller* Controller_getInstance()
 {
     static Controller* controller = NULL;
     if (controller == NULL) {
@@ -17,10 +17,12 @@ Controller* Controller_getInstance(void)
     return controller;
 }
 
-Controller* Controller_construct(void)
+Controller* Controller_construct()
 {
     Controller* controller = malloc(sizeof(Controller));
-    controller->leds = LEDs_construct();
+
+    controller->leds    = LEDs_construct();
+    controller->buttons = Buttons_construct();
 
     return controller;
 }

@@ -8,11 +8,16 @@
 
 /* Module Includes */
 #include <Demo.h>
+#include <Timer.h>
+#include <Controller.h>
 
 void Initialize(void)
 {
     // Stop the Watchdog Timer
     WDT_A_holdTimer();
+
+    // Initialize global timers
+    HWTimers_init();
 
     // Need to invoke this one time to call all control constructors
     Controller_getInstance();
@@ -21,11 +26,11 @@ void Initialize(void)
 void SuperLoop(void)
 {
     for (;;) {
-        Demo_showLEDs();
+        Demo_showTimerLEDs();
     }
 }
 
-void main(void)
+int main(void)
 {
     Initialize();
     SuperLoop();

@@ -10,7 +10,8 @@
 
 #include <ti/devices/msp432p4xx/driverlib/driverlib.h>
 
-void SuperLoop(void);
-void Demo_showLEDs(void);
+void SuperLoop();
+void Demo_showLEDs();
+void Demo_showTimerLEDs();
 
 #endif /* DEMO_H_ */
